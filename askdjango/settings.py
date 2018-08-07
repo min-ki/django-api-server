@@ -25,7 +25,7 @@ SECRET_KEY = 'yle@#dak(%-47+i(svjs73c58sgfz+o8q=@=hs&fcup7&hrc3b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.localhost']
+ALLOWED_HOSTS = ['*', 'localhost']
 
 
 # Application definition

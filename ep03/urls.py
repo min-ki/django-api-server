@@ -16,4 +16,4 @@ urlpatterns = [
     path('', include(router.urls)),
     # path('user/', views.user_list),
     # path('user/<int:pk>/', views.user_detail),
-]
+] 

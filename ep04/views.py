@@ -23,7 +23,7 @@ class PostViewSet(ModelViewSet):
     def set_public(self, request, pk):
         instance = self.get_object()
         instance.is_public = True
-        instance.save()
+        instance.save() 
 
         serializer = self.get_serializer(instance)
         return Response(serializer.data) 

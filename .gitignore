@@ -1,3 +1,7 @@
 .vscode
 *.ipynb
 db.sqlite3
+*/__pycache__/
+*/migrations/__pycache__/
+*.pyc
+__pycache__

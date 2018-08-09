@@ -18,7 +18,7 @@ class PostViewSet(ModelViewSet):
         return Response(serializer.data)
 
     # /ep04/post/10/set_public/ => set_public()함수가 호출
-    
+
     @detail_route(methods=['patch'])
     def set_public(self, request, pk):
         instance = self.get_object()
@@ -26,4 +26,4 @@ class PostViewSet(ModelViewSet):
         instance.save()
 
         serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+        return Response(serializer.data) 

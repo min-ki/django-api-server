@@ -1,14 +1,29 @@
 import time
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.negotiation import BaseContentNegotiation
+from rest_framework.renderers import JSONRenderer
 from django.core.cache import cache
 from django.core.signals import request_started, request_finished
 from .models import Post
 from .serializers import PostSerializer
 
+class IgnoreClientContentNegotiation(BaseContentNegotiation):
+    def select_parser(self, request, parsers):
+        "Select the first parser in the `.parser_classes` list."
+        return parsers[0]
+
+    def select_renderer(self, request, renderers, format_suffix):
+        "Select the first renderer in the `.renderer_classes` list."
+        return (renderers[0], renderers[0].media_type)
+
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = []
+    authentication_classes = []
+    renderer_classes = [JSONRenderer]
+    content_negotiation_class = IgnoreClientContentNegotiation
 
     def perform_create(self, serializer):
         serializer.save(
@@ -39,7 +54,7 @@ class PostViewSet(ModelViewSet):
         if data is None:
             data = self.queryset.values('author__username', 'message')
             cache.set('post_list_cache', data)
-            
+
         self.db_time = time.time() - db_start
 
         # serializer_start = time.time()

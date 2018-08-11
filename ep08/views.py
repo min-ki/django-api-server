@@ -1,6 +1,7 @@
 import time
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from django.core.cache import cache
 from django.core.signals import request_started, request_finished
 from .models import Post
 from .serializers import PostSerializer
@@ -33,7 +34,12 @@ class PostViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         db_start = time.time()
         # post_list = list(self.queryset)
-        data = self.queryset.values('author__username', 'message')
+
+        data = cache.get('post_list_cache')
+        if data is None:
+            data = self.queryset.values('author__username', 'message')
+            cache.set('post_list_cache', data)
+            
         self.db_time = time.time() - db_start
 
         # serializer_start = time.time()
